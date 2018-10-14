@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">NEST</string>
+    <string name="officeversion">OfficeVersion</string>
+    <string name="newversion">NewVersion</string>
+    <string name="ConnectChoice">连接协议选择</string>
+    <string name="care">线程守护</string>
+    <string name="start">启动</string>
+
+
+    //-----------------------------------camera-------------------------------------------------------------
+    <string name="lpr_chniese_name">车牌识别</string>
+    <string name="shape">图形识别</string>
+    <string name="login_stuta_camer">相机状态</string>
+    <string name="camera_id">Device ID</string>
+    <string name="camera_user">user name</string>
+    <string name="connect">Connecting</string>
+    <string name="camera_pwd">Pass Word</string>
+    <string name="str_search">Lan搜索</string>
+    <string name="see_mode">视频流</string>
+    <string name="add_search_result">收缩结果</string>
+    <string name="refresh">刷新</string>
+    <string name="str_cancel">取消</string>
+    <string name="pppp_status_connecting">正在连接</string>
+    <string name="pppp_status_connect_failed">连接失败</string>
+    <string name="pppp_status_disconnect">断线</string>
+    <string name="pppp_status_initialing">已连接正在初始化</string>
+    <string name="pppp_status_invalid_id">ID号无效</string>
+    <string name="pppp_status_online">在线</string>
+    <string name="device_not_on_line">不在线</string>
+    <string name="pppp_status_connect_timeout">连接超时</string>
+    <string name="pppp_status_pwd_error">密码错误</string>
+    <string name="pppp_status_unknown">状态未知</string>
+    <string name="alerm_motion_alarm">移动检测报警</string>
+    <string name="alerm_gpio_alarm">联动检测报警</string>
+    <string name="ptz_control">请按菜单键,进行云台控制</string>
+    <string name="connecting">连接中。。。</string>
+    <string name="startView">开始</string>
+    //-----------------------------------camera-------------------------------------------------------------
+</resources>

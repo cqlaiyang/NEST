@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="choice">
+        <item>开启</item>
+        <item>关闭</item>
+    </string-array>
+    <string-array name="connect">
+        <item>WiFi连接</item>
+        <item>USB连接</item>
+    </string-array>
+</resources>
