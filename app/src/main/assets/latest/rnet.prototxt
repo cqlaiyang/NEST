@@ -1,0 +1,125 @@
+input: "data"
+input_dim: 1
+input_dim: 3
+input_dim: 24
+input_dim: 72
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  convolution_param {
+    num_output: 16
+    bias_term: true
+    pad: 0
+    kernel_size: 3
+    stride: 1
+  }
+}
+layer {
+  name: "prelu1"
+  type: "PReLU"
+  bottom: "conv1"
+  top: "prelu1"
+}
+layer {
+  name: "max_pooling2d_3"
+  type: "Pooling"
+  bottom: "prelu1"
+  top: "max_pooling2d_3"
+  pooling_param {
+    pool: MAX
+    pad: 0
+    kernel_h: 2
+    kernel_w: 2
+    stride_h: 2
+    stride_w: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "max_pooling2d_3"
+  top: "conv2"
+  convolution_param {
+    num_output: 32
+    bias_term: true
+    pad: 0
+    kernel_size: 3
+    stride: 1
+  }
+}
+layer {
+  name: "prelu2"
+  type: "PReLU"
+  bottom: "conv2"
+  top: "prelu2"
+}
+layer {
+  name: "max_pooling2d_4"
+  type: "Pooling"
+  bottom: "prelu2"
+  top: "max_pooling2d_4"
+  pooling_param {
+    pool: MAX
+    pad: 0
+    kernel_h: 3
+    kernel_w: 3
+    stride_h: 3
+    stride_w: 3
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "max_pooling2d_4"
+  top: "conv3"
+  convolution_param {
+    num_output: 48
+    bias_term: true
+    pad: 0
+    kernel_size: 3
+    stride: 1
+  }
+}
+layer {
+  name: "flatten_2"
+  type: "Flatten"
+  bottom: "conv3"
+  top: "flatten_2"
+}
+layer {
+  name: "dense_2"
+  type: "InnerProduct"
+  bottom: "flatten_2"
+  top: "dense_2"
+  inner_product_param {
+    num_output: 128
+  }
+}
+layer {
+  name: "prob1"
+  type: "InnerProduct"
+  bottom: "dense_2"
+  top: "prob1"
+  inner_product_param {
+    num_output: 2
+  }
+}
+
+layer {
+  name: "prob2"
+  type: "Softmax"
+  bottom: "prob1"
+  top: "prob2"
+}
+
+layer {
+  name: "bbox1"
+  type: "InnerProduct"
+  bottom: "dense_2"
+  top: "bbox1"
+  inner_product_param {
+    num_output: 4
+  }
+}
