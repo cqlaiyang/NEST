@@ -82,7 +82,7 @@ public enum TaskEnum implements Mission {
     },
     // 形状识别
     // 2018/12/12 目前写完与调试完图形；
-    // 它实现的功能原多于比赛
+    // 它的能力远大于比赛
     // 1.形状识别，能识别比赛所有形状
     // 2.每个图形颜色判断（8种颜色），并且算法比较精炼；使用mask和欧式距离计算，系统鲁棒性大大提高！
     SHAPE("CMD_SHAPE:") {
@@ -96,19 +96,26 @@ public enum TaskEnum implements Mission {
                     // 定义一个Map用于存取映射数据
                     Map<String, Integer> shapeResult = new HashMap<String, Integer>();
 
-                    TaskEnum.LIFT.execute();
 
                     // 得到当前图片
-                    String result;
+                    String result = "";
 
                     Pic = GetPicture.getPicture();
+
                     try {
                         result = Plate.PlateRecognition(Pic);
-                        if (result.length() > 1) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (result.length() > 1) {
                             Connect_transport.send("NO_TARGET");
                         } else {
                             // 图形识别
                             shapeResult = Shape.ShapeRecognition(Pic);
+
+                            for (Map.Entry<String,Integer> entry : shapeResult.entrySet()) {
+                                Log.d("laiyang666","Key = " + entry.getKey() + ",Value" + entry.getValue());
+                            }
 
                             // 统计
                             String Numbers = ShapeStatistics.Statistics(shapeResult);
@@ -118,11 +125,7 @@ public enum TaskEnum implements Mission {
                             SendQueue ShapeMessage = new SendQueue(Numbers);
                             missionQueue.add(ShapeMessage);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Logger.d("laiyang666", "崩溃" + e.getMessage());
-                    }
-
+                  
 
                 }
             });
@@ -190,7 +193,7 @@ public enum TaskEnum implements Mission {
     FRONT("FRONT") {
         @Override
         public void execute() {
-            if (VeerCamera.count2 == 0){
+            if (VeerCamera.count2 == 0) {
                 VeerCamera.Reset();
             }
 
@@ -203,8 +206,8 @@ public enum TaskEnum implements Mission {
                 VeerCamera.CarMistake();
 
                 TaskEnum.RIGHT.execute();
-            }else {
-
+            } else {
+                VeerCamera.count2 = 0;
                 // 计算与标准点的偏差
                 int x = (int) (rect.x + (rect.size().width / 2)) - 640;
                 int y = (int) (rect.y + (rect.size().height / 2)) - 360;
@@ -220,7 +223,7 @@ public enum TaskEnum implements Mission {
     LIFT("LIFT") {
         @Override
         public void execute() {
-            if (VeerCamera.count2 == 0){
+            if (VeerCamera.count2 == 0) {
                 VeerCamera.staticLift();
             }
 
@@ -233,7 +236,7 @@ public enum TaskEnum implements Mission {
                 VeerCamera.CarMistake();
 
                 TaskEnum.LIFT.execute();
-            }else {
+            } else {
 
                 // 计算与标准点的偏差
                 int x = (int) (rect.x + (rect.size().width / 2)) - 640;
@@ -251,7 +254,7 @@ public enum TaskEnum implements Mission {
     RIGHT("RIGHT") {
         @Override
         public void execute() {
-            if (VeerCamera.count2 == 0){
+            if (VeerCamera.count2 == 0) {
                 VeerCamera.staticRight();
             }
 
@@ -264,7 +267,7 @@ public enum TaskEnum implements Mission {
                 VeerCamera.CarMistake();
 
                 TaskEnum.RIGHT.execute();
-            }else {
+            } else {
 
                 // 计算与标准点的偏差
                 int x = (int) (rect.x + (rect.size().width / 2)) - 640;

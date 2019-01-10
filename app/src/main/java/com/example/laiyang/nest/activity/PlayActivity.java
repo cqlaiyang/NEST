@@ -192,7 +192,7 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
                 break;
             }
             case R.id.Test:{
-                VeerCamera.staticCarMistake();
+                VeerCamera.CarMistake();
             }
 
         }

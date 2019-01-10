@@ -55,9 +55,8 @@ public class MixRecong {
                     } else {
                         VeerCamera.count = 0;
                         VeerCamera.Reset();
-
-                        byte[] Result = {(byte)0x03,(byte) 0x05,(byte) 0x14,(byte)0x45,(byte) 0xde,(byte)0x92};
-                        MissionQueueFactory.getMissionQueue().add(new SendQueue(Result));
+                        result = result.substring(10,11);
+                        MissionQueueFactory.getMissionQueue().add(new SendQueue(result));
                         // 这里进行字符串截取与算法操作
                     }
 

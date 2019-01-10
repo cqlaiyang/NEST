@@ -160,14 +160,16 @@ public class VeerCamera {
 
     public static void CarMistake() {
         if (count2 == 0) {
-            lift(1);
+            staticMinLift();
             count2++;
         } else if (count2 == 1) {
-            right(2);
+            staticMinRight();
             count2++;
         } else if (count2 == 2) {
+            Reset();
             count2++;
         }
+
     }
 
     // 得到待识别框；可以简化代码提高性能

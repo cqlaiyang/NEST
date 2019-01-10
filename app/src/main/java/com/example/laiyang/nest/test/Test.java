@@ -1,15 +1,14 @@
 package com.example.laiyang.nest.test;
 
 
+import com.example.laiyang.nest.camera.utils.SystemValue;
 
 public class Test {
     public static void main(String[] args){
-        byte[] bytes = {(byte) 0x03,(byte) 0x05,(byte) 0x14,(byte) 0x45,(byte) 0xDE,(byte) 0x92};
+        String s = "<a,V.|Set=4|>";
 
-        StringBuilder stringBuilder = byte2hex(bytes);
-
-        System.out.println("" + stringBuilder);
-
+        s = s.substring(10,11);
+        System.out.print("" + s);
     }
 
     /**

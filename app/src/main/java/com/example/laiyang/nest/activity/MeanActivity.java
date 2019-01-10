@@ -109,7 +109,7 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
             strDiD = "VSTD135448VYJWF";
         } else {
             strDiD = "VSTA305435FHUWH";
-            strPwd = "888888";
+            strPwd = "88888888";
         }
         if (option == ContentCommon.INVALID_OPTION) {
             option = ContentCommon.ADD_CAMERA;
