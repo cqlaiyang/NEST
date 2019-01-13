@@ -6,17 +6,24 @@ package com.example.laiyang.nest;
  * @Activity：启动页面过度
  */
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
+import com.example.laiyang.nest.activity.MeanActivity;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-public class BootPageActivity extends Activity {
+import vstc2.nativecaller.NativeCaller;
+
+public class BootPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +31,21 @@ public class BootPageActivity extends Activity {
         setContentView(R.layout.activity_boot_page);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
 
+
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if (ActivityCompat.checkSelfPermission(BootPageActivity.this, permission)
+                != PackageManager.PERMISSION_GRANTED
+                ) {
+            ActivityCompat.requestPermissions(BootPageActivity.this, new String[]
+                    {permission}, 123);
+
+        }
+
         immersion();
+        NativeCaller.PPPPInitialOther("ADCBBFAOPPJAHGJGBBGLFLAGDBJJHNJGGMBFBKHIBBNKOKLDHOBHCBOEHOKJJJKJBPMFLGCPPJMJAPDOIPNL");
+
+        NativeCaller.SetAPPDataPath("/data/data/com.example.laiyang.nest/files");
+        Log.d("eye4","" +getApplicationContext().getFilesDir().getAbsolutePath());
         delayshow();
     }
 
@@ -34,7 +55,8 @@ public class BootPageActivity extends Activity {
     private void delayshow() {  new Handler().postDelayed(new Runnable() {
         @Override
         public void run() {
-            Intent mainIntent = new Intent(BootPageActivity.this,MainActivity.class);
+
+            Intent mainIntent = new Intent(BootPageActivity.this,MeanActivity.class);
             BootPageActivity.this.startActivity(mainIntent);
             BootPageActivity.this.finish();
         }

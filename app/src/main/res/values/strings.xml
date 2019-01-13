@@ -3,7 +3,7 @@
     <string name="officeversion">OfficeVersion</string>
     <string name="newversion">NewVersion</string>
     <string name="ConnectChoice">连接协议选择</string>
-    <string name="care">线程守护</string>
+    <string name="care">连接设备选择</string>
     <string name="start">启动</string>
 
 
@@ -35,5 +35,12 @@
     <string name="ptz_control">请按菜单键,进行云台控制</string>
     <string name="connecting">连接中。。。</string>
     <string name="startView">开始</string>
+    <string name="state">相机状态</string>
+    <string name="Start">启动</string>
+    <string name="Trffic">交通灯</string>
+    <string name="Plate">车牌</string>
+    <string name="LandMar">标志物</string>
+    <string name="QrCode">二维码</string>
+    <string name="Shape">图形</string>
     //-----------------------------------camera-------------------------------------------------------------
 </resources>

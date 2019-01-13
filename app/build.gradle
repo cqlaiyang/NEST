@@ -2,15 +2,34 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+    buildToolsVersion '28.0.3'
     publishNonDefault true
     defaultConfig {
         applicationId "com.example.laiyang.nest"
 
         minSdkVersion 23
-        targetSdkVersion 27
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // 配置Cmake
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+
+                // 也可以使用一下配置 不懂是什么意思
+                // cppFlags "-std=c++11 - frtti -fexcetions"
+                // abiFilters 'armeabi-v7a'
+                arguments '-DANDROID_STL=gnustl_static'
+            }
+        }
+
+
+        // ndk构建选择CPU格式
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+
     }
     buildTypes {
         release {
@@ -18,7 +37,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets.main {
+        // 下面第一行代码意思是可以防止生成Android.mk
+        jni.srcDirs = [] //This prevents the auto generation of Android.mk
+        jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
+    }
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+        }
+    }
     productFlavors {
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 allprojects {
@@ -58,7 +91,16 @@ dependencies {
      *
      */
     implementation 'com.github.gittjy:LoadingDialog:1.0.2'
-
     //----------------------------------------------------------------------------------------
-    implementation project(':mylibrary')
+    /**
+     * Zxing解析二维码
+     */
+    implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.5'
+    //---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation project(':openCVLibrary342')
+    implementation project(':qrcodecore')
+    implementation project(':zbar')
+    implementation project(':zxing')
 }
