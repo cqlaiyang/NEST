@@ -152,12 +152,17 @@ public class ShapeUtils {
         // 进行双边滤波，在保留边缘的同时把颜色更加突出，
         // 让梯度能够识别出边缘；
         Mat ROIMat = new Mat();
-        Imgproc.cvtColor(input,input,Imgproc.COLOR_RGBA2RGB);
 
-        Log.d("laiyang666",ROIMat.type() + "");
-        Imgproc.bilateralFilter(input,ROIMat,0,50,20);
 
-        Imgproc.resize(ROIMat,ROIMat,new Size(ROIMat.width()*2,ROIMat.width()*2));
+
+        Log.d("laiyang666","" + ROIMat.type());
+
+      //  Imgproc.cvtColor(input,ROIMat,Imgproc.COLOR_RGBA2RGB);
+
+
+       // Imgproc.bilateralFilter(ROIMat,ROIMat,0,50,20);
+
+        Imgproc.resize(input,ROIMat,new Size(ROIMat.width()*2,ROIMat.width()*2));
 
         Mat GrayMat = new Mat();
 
@@ -165,6 +170,7 @@ public class ShapeUtils {
         // 转为灰度图
         Imgproc.cvtColor(ROIMat, GrayMat, Imgproc.COLOR_RGB2GRAY);
 
+        Imgproc.threshold(ROIMat,ROIMat,127,255,Imgproc.THRESH_BINARY_INV|Imgproc.THRESH_TRIANGLE);
 
         // 计算X方向的梯度值
         Mat gradx = new Mat();
@@ -187,7 +193,7 @@ public class ShapeUtils {
         Imgproc.cvtColor(ROIContours,ROIContours,Imgproc.COLOR_RGB2GRAY);
 
         // 现在的轮廓颜色比较暗淡
-        // 需要进行提亮炒作；
+        // 需要进行提亮操作；
         byte[] Pixl = new byte[ROIContours.channels() * ROIContours.cols() * ROIContours.rows()];
         ROIContours.get(0, 0, Pixl);
 
@@ -224,29 +230,6 @@ public class ShapeUtils {
         Imgproc.findContours(ROIContours, margin, Top, Imgproc.RETR_EXTERNAL,
                 Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
 
-        // --------------------------调试代码-----------------------------------
-
-        Bitmap DebugBitmap = Bitmap.createBitmap(ROIMat.cols(), ROIMat.rows(), Bitmap.Config.RGB_565);
-
-        Bitmap DebugBitmap2 = Bitmap.createBitmap(ROIMat.cols(), ROIMat.rows(), Bitmap.Config.RGB_565);
-
-        Bitmap DebugBitmap3 = Bitmap.createBitmap(ROIMat.cols(), ROIMat.rows(), Bitmap.Config.RGB_565);
-
-        Bitmap DebugBitmap4 = Bitmap.createBitmap(ROIMat.cols(), ROIMat.rows(), Bitmap.Config.RGB_565);
-
-        Utils.matToBitmap(ROIMat,DebugBitmap);
-        Utils.matToBitmap(input,DebugBitmap2);
-        Utils.matToBitmap(mat,DebugBitmap3);
-        Utils.matToBitmap(ROIContours,DebugBitmap4);
-
-        Mat dst = new Mat();
-        dst.create(ROIMat.size(), ROIMat.type());
-        dst.setTo(new Scalar(255, 255, 255));
-
-        Utils.matToBitmap(ROIContours,DebugBitmap);
-
-
-        // --------------------------调试代码-----------------------------------
 
         // 剔除外边框干扰判断的轮廓(通过判断轮廓长度)
         for (int cnt = 0; cnt < margin.size(); cnt++) {

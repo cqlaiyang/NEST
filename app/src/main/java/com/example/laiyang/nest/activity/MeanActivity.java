@@ -56,7 +56,7 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
     public static MeanActivity instance = null;
 
 
-    private Connect_transport connect_transport;
+    private Connect_transport Connect_transport;
 
     MissionQueue missionQueue;
 
@@ -105,7 +105,7 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
         String strPwd;
         String strDiD;
         if (iscar) {
-            strPwd = "888888";
+            strPwd = "88888888";
             strDiD = "VSTD135448VYJWF";
         } else {
             strDiD = "VSTA305435FHUWH";

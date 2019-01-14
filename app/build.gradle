@@ -69,31 +69,31 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //------------------------------------------------------------------------------------------------
     /**
-     * @ implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-     * @ link MainActivity.class
-     * @ function 沉浸式导航栏的一个控件
+     *  @ implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+     *  @ link MainActivity.class
+     *  @ function 沉浸式导航栏的一个控件
      */
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     //------------------------------------------------------------------------------------------------
     /**
-     * @ method ButterKnife框架注入:
+     *  @ method ButterKnife框架注入:
      */
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //----------------------------------------------------------------------------------------
     /**
-     * Logger
+     *  Logger
      */
     implementation 'com.orhanobut:logger:2.2.0'
     //----------------------------------------------------------------------------------------
     /**
-     * 等待dialog
+     *  等待dialog
      *
      */
     implementation 'com.github.gittjy:LoadingDialog:1.0.2'
     //----------------------------------------------------------------------------------------
     /**
-     * Zxing解析二维码
+     *  Zxing解析二维码
      */
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.5'
     //---------------------------------------------------------------------------------------
@@ -103,4 +103,5 @@ dependencies {
     implementation project(':qrcodecore')
     implementation project(':zbar')
     implementation project(':zxing')
+    implementation files('libs/hyper-lib.jar')
 }
