@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml:1:1-53
+INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml:1:1-53
+INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml:1:1-53
+	package
+		ADDED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml:1:11-51
+		INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+		INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml:1:1-53
+uses-sdk
+INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+		ADDED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+		INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+		ADDED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
+		INJECTED from G:\Android\2018Android_Project_Path\Project_LaiYang\NEST\zxing\src\main\AndroidManifest.xml
