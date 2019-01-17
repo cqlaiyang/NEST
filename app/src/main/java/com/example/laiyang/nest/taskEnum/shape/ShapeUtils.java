@@ -3,7 +3,6 @@ package com.example.laiyang.nest.taskEnum.shape;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.example.laiyang.nest.camera.utils.ContentCommon;
 import com.example.laiyang.nest.camera.utils.SystemValue;
 
 import org.opencv.android.Utils;
@@ -144,70 +143,45 @@ public class ShapeUtils {
     }
 
     /**
-     * @param input 传入TFT显示标志物屏幕区域的Mat
+     * @param ROIMat 传入TFT显示标志物屏幕区域的Mat
      * @return 返回一个图像的链表链表
      */
-    public static List GetShapeContours(Mat input) {
-
-        // 进行双边滤波，在保留边缘的同时把颜色更加突出，
-        // 让梯度能够识别出边缘；
-        Mat ROIMat = new Mat();
-
-
-
-        Log.d("laiyang666","" + ROIMat.type());
-
-      //  Imgproc.cvtColor(input,ROIMat,Imgproc.COLOR_RGBA2RGB);
-
-
-       // Imgproc.bilateralFilter(ROIMat,ROIMat,0,50,20);
-
-        Imgproc.resize(input,ROIMat,new Size(ROIMat.width()*2,ROIMat.width()*2));
+    public static List GetShapeContours(Mat ROIMat) {
 
         Mat GrayMat = new Mat();
-
 
         // 转为灰度图
         Imgproc.cvtColor(ROIMat, GrayMat, Imgproc.COLOR_RGB2GRAY);
 
-        Imgproc.threshold(ROIMat,ROIMat,127,255,Imgproc.THRESH_BINARY_INV|Imgproc.THRESH_TRIANGLE);
-
         // 计算X方向的梯度值
         Mat gradx = new Mat();
-        Imgproc.Sobel(ROIMat, gradx, CvType.CV_32F, 1, 0);
+        Imgproc.Sobel(GrayMat, gradx, CvType.CV_32F, 1, 0);
         Core.convertScaleAbs(gradx, gradx);
 
         // 计算Y方向的梯度值
         Mat grady = new Mat();
-        Imgproc.Sobel(ROIMat, grady, CvType.CV_32F, 0, 1);
+        Imgproc.Sobel(GrayMat, grady, CvType.CV_32F, 0, 1);
         Core.convertScaleAbs(grady, grady);
 
         // 将X方向与Y方向的值合成
         Mat ROIContours = new Mat();
         Core.addWeighted(gradx, 0.5, grady, 0.5, 0, ROIContours);
 
-        Mat mat = new Mat();
-        Core.addWeighted(gradx, 0.5, grady, 0.5, 0, mat);
-
-        Imgproc.cvtColor(mat,mat,Imgproc.COLOR_RGB2GRAY);
-        Imgproc.cvtColor(ROIContours,ROIContours,Imgproc.COLOR_RGB2GRAY);
-
         // 现在的轮廓颜色比较暗淡
-        // 需要进行提亮操作；
+        // 需要进行提亮炒作；
         byte[] Pixl = new byte[ROIContours.channels() * ROIContours.cols() * ROIContours.rows()];
         ROIContours.get(0, 0, Pixl);
 
         int pv = 0;
         for (int i = 0; i < Pixl.length; i++) {
             pv = Pixl[i] & 0xff;
-            if (pv > 20) {
+            if (pv > 100) {
                 Pixl[i] = (byte) 0;
             } else {
                 Pixl[i] = (byte) 255;
             }
         }
         ROIContours.put(0, 0, Pixl);
-
 
         // 现在得到一个明显的轮廓图
         // 但是它包含了TFT边框杂七杂八的轮廓；所以我们要进行：“筛选”，“剔除”；
@@ -230,7 +204,6 @@ public class ShapeUtils {
         Imgproc.findContours(ROIContours, margin, Top, Imgproc.RETR_EXTERNAL,
                 Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
 
-
         // 剔除外边框干扰判断的轮廓(通过判断轮廓长度)
         for (int cnt = 0; cnt < margin.size(); cnt++) {
             MatOfPoint marginPoint = margin.get(cnt);
@@ -239,22 +212,22 @@ public class ShapeUtils {
             for (int cont = 0; cont < Whole.size(); cont++) {
                 MatOfPoint wholePoint = Whole.get(cont);
                 double wholeLenth = Imgproc.arcLength(new MatOfPoint2f(wholePoint.toArray()), false);
-                double Area = Imgproc.contourArea(wholePoint, false);
+                double Area = Imgproc.contourArea(wholePoint,false);
                 if (wholeLenth == marginLenth) {
                     Whole.remove(cont);
                 } else {
-                    if (Area < 2000) {
+                    if (Area < 2000){
                         Whole.remove(cont);
                         cont = -1;
-                    } else
+                    }else
 
-                        // 这一个过滤是过滤外边框中闭合的轮廓
-                        // 面积也和待识别的基本接近
-                        // 但是他的轮廓是围着边框一圈
-                        if (wholeLenth > 1000) {
-                            Whole.remove(cont);
-                            cont = -1; // = -1 ?  (-1 ++) = 0;
-                        }
+                    // 这一个过滤是过滤外边框中闭合的轮廓
+                    // 面积也和待识别的基本接近
+                    // 但是他的轮廓是围着边框一圈
+                    if (wholeLenth > 1000) {
+                        Whole.remove(cont);
+                        cont = -1; // = -1 ?  (-1 ++) = 0;
+                    }
                 }
 
             }
@@ -262,13 +235,21 @@ public class ShapeUtils {
         }
 
 
+        Bitmap DebugBitmap = Bitmap.createBitmap(ROIMat.cols(),ROIMat.rows(),Bitmap.Config.RGB_565);
+        Mat dst = new Mat();
+        dst.create(ROIMat.size(),ROIMat.type());
+        dst.setTo(new Scalar(255,255,255));
 
+        for (int i = 0; i < Whole.size();i++) {
+            Imgproc.drawContours(dst,Whole,i,new Scalar(0,0,255),1);
+            Utils.matToBitmap(dst,DebugBitmap);
+        }
 
         for (int i = 0; i < Whole.size(); i++) {
             MatOfPoint wholePoint = Whole.get(i);
-            double Area = Imgproc.contourArea(wholePoint, false);
-            double Lenth = Imgproc.arcLength(new MatOfPoint2f(wholePoint.toArray()), false);
-            Log.d("laiyang666", "" + Area + "----" + Lenth);
+            double Area = Imgproc.contourArea(wholePoint,false);
+            double Lenth = Imgproc.arcLength(new MatOfPoint2f(wholePoint.toArray()),false);
+            Log.d("laiyang666","" + Area + "----" + Lenth);
         }
         // 现在还存在内轮廓与外轮廓
         // 我选择剔除外轮廓，
@@ -277,16 +258,9 @@ public class ShapeUtils {
         // 内外轮廓的顺序是：外 ：内 ：外 ：内 ：外 ：内
 
         Log.d("laiyang666", "Whole Size:" + Whole.size());
-        for (int cnt = Whole.size() - 2; cnt >= 0; cnt = cnt - 2) {
+        for (int cnt = Whole.size() - 2; cnt >= 0; cnt = cnt- 2) {
             Whole.remove(cnt);
         }
-
-        // --------------------------调试代码-----------------------------------
-//        for (int i = 0; i < Whole.size(); i++) {
-//            Imgproc.drawContours(dst, Whole, i, new Scalar(0, 0, 255), 1);
-//            Utils.matToBitmap(dst, DebugBitmap4);
-//        }
-        // --------------------------调试代码-----------------------------------
         return Whole;
     }
 }

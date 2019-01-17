@@ -49,51 +49,57 @@ public class HandOut implements Mission {
         Log.i("info","正在分发该命令：" + cmd);
         Logger.i("info","正在分发该命令：" + cmd);
 
-        // 拆分该命令
-        String direction = cmd.substring(cmd.indexOf(":") + 1,cmd.length());
+        // 拆分该命令 主指令:副指令
+        String subCmd = cmd.substring(cmd.indexOf(":") + 1,cmd.length());
         cmd = cmd.substring(0,cmd.indexOf(":") + 1);
 
-        Logger.d("laiyang666","" + direction + "-" + cmd);
+        Logger.d("laiyang666","" + subCmd + "-" + cmd);
         switch (cmd) {
 
             // 二维码
             case "CMD_QR_CODE:": {
-                direction(direction);
+                direction(subCmd);
                 TaskEnum.QR.execute();
                 break;
             }
 
             // 车牌
             case "CMD_PLATE:":{
-                direction(direction);
+                direction(subCmd);
                 TaskEnum.CAR_PLATE.execute();
                 break;
             }
 
             // 图形
             case "CMD_SHAPE:": {
-                direction(direction);
+                direction(subCmd);
                 TaskEnum.SHAPE.execute();
                 break;
             }
 
             // 交通灯
             case "CMD_TRAFFIC:": {
-                direction(direction);
+                direction(subCmd);
                 TaskEnum.TRAFFIC_LIGHT.execute();
                 break;
             }
 
             // RFID卡
             case "CMD_RFID_CARD:": {
-                direction(direction);
+                direction(subCmd);
                 break;
             }
 
             // 立体显示标志物
             case "CMD_STEMAK_IPS:":{
-                direction(direction);
+                direction(subCmd);
                 TaskEnum.IPS.execute();
+                break;
+            }
+
+            // 从车二维码解析任务
+            case "CMD_SQRCODE:":{
+                TaskEnum.SQRCODE.execute(subCmd);
                 break;
             }
             default:{
@@ -101,6 +107,11 @@ public class HandOut implements Mission {
                 break;
             }
         }
+    }
+
+    @Override
+    public void execute(String s) {
+
     }
 
     public void direction(String dir){

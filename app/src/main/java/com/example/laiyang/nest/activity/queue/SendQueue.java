@@ -43,4 +43,9 @@ public class SendQueue implements Mission {
 
     }
 
+    @Override
+    public void execute(String s) {
+
+    }
+
 }

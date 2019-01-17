@@ -70,7 +70,7 @@ public class TrafficLight {
         int YellowSatMin = 25;
         int YellowSatMax = 127;
 
-        int YellowValueMin = 200;
+        int YellowValueMin = 0;
         int YellowValueMax = 256;
         //------------------------------绿
         int GreenHueMin = 60;
@@ -111,13 +111,10 @@ public class TrafficLight {
             Color = "G";
         }
 
-        if (RedCounter > 1500){
+        if (RedCounter > 1000){
             Color = "R";
         }
 
-        if (YellowCounter > 600){
-            Color ="Y";
-        }
         Logger.i("TrafficLight","" +RedCounter + "-" + YellowCounter + "-" + GreenCounter);
         //释放内存
         HSVMat.release();

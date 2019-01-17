@@ -46,6 +46,11 @@ public enum TaskEnum implements Mission {
                 }
             });
         }
+
+        @Override
+        public void execute(String s) {
+
+        }
     },
     //车牌识别
     CAR_PLATE("CMD_PLATE:") {
@@ -79,6 +84,11 @@ public enum TaskEnum implements Mission {
                 }
             });
         }
+
+        @Override
+        public void execute(String s) {
+
+        }
     },
     // 形状识别
     // 2018/12/12 目前写完与调试完图形；
@@ -105,6 +115,7 @@ public enum TaskEnum implements Mission {
                     try {
                         result = Plate.PlateRecognition(Pic);
                     } catch (Exception e) {
+                        Logger.e("laiyang666",e + "");
                         e.printStackTrace();
                     }
                     if (result.length() > 1) {
@@ -130,6 +141,11 @@ public enum TaskEnum implements Mission {
                 }
             });
         }
+
+        @Override
+        public void execute(String s) {
+
+        }
     },
     //交通灯判断
     TRAFFIC_LIGHT("CMD_TRAFFIC:") {
@@ -148,6 +164,11 @@ public enum TaskEnum implements Mission {
                     missionQueue.add(sendQueue);
                 }
             });
+        }
+
+        @Override
+        public void execute(String s) {
+
         }
     },
     //立体显示标志物
@@ -188,6 +209,25 @@ public enum TaskEnum implements Mission {
                 }
             });
         }
+
+        @Override
+        public void execute(String s) {
+
+        }
+    },
+
+    SQRCODE("CMD_SQRCODE"){
+        @Override
+        public void execute() {
+
+        }
+
+        @Override
+        public void execute(String s) {
+            s = s.substring(10,11);
+            MissionQueueFactory.getMissionQueue().add(new SendQueue(s));
+            Log.d("laiyang666","" + s);
+        }
     },
 
     FRONT("FRONT") {
@@ -218,6 +258,11 @@ public enum TaskEnum implements Mission {
                     e.printStackTrace();
                 }
             }
+        }
+
+        @Override
+        public void execute(String s) {
+
         }
     },
     LIFT("LIFT") {
@@ -250,6 +295,11 @@ public enum TaskEnum implements Mission {
             }
 
         }
+
+        @Override
+        public void execute(String s) {
+
+        }
     },
     RIGHT("RIGHT") {
         @Override
@@ -279,6 +329,11 @@ public enum TaskEnum implements Mission {
                     e.printStackTrace();
                 }
             }
+        }
+
+        @Override
+        public void execute(String s) {
+
         }
     },;
 

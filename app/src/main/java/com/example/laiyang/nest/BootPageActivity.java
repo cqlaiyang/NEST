@@ -95,6 +95,7 @@ public class BootPageActivity extends AppCompatActivity {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.addCategory(Intent.CATEGORY_HOME);
             startActivity(i);
-        }return super.onKeyDown(keyCode,event);
+        }
+        return super.onKeyDown(keyCode,event);
     }
 }

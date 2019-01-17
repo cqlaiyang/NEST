@@ -33,6 +33,8 @@ public class Shape {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        DebugBitMap = Bitmap.createBitmap(ROIMat.cols(), ROIMat.rows(), Bitmap.Config.RGB_565);
+        Utils.matToBitmap(ROIMat, DebugBitMap);
         Log.d("laiyang666", "你是猪吗？");
         // 对ROI区域进行轮廓提取与筛选得到的是一个只含内轮廓的链表
         List<MatOfPoint> ShapeContours = new ArrayList<MatOfPoint>();
