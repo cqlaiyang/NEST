@@ -70,7 +70,7 @@ public class TrafficLight {
         int YellowSatMin = 25;
         int YellowSatMax = 127;
 
-        int YellowValueMin = 0;
+        int YellowValueMin = 160;
         int YellowValueMax = 256;
         //------------------------------绿
         int GreenHueMin = 60;

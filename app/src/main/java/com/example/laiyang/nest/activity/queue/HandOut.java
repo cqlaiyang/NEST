@@ -53,7 +53,7 @@ public class HandOut implements Mission {
         String subCmd = cmd.substring(cmd.indexOf(":") + 1,cmd.length());
         cmd = cmd.substring(0,cmd.indexOf(":") + 1);
 
-        Logger.d("laiyang666","" + subCmd + "-" + cmd);
+        Logger.d("laiyang666","主指令：" + cmd + "-副指令：" + subCmd);
         switch (cmd) {
 
             // 二维码
@@ -86,7 +86,7 @@ public class HandOut implements Mission {
 
             // RFID卡
             case "CMD_RFID_CARD:": {
-                direction(subCmd);
+                TaskEnum.RFID.execute(subCmd);
                 break;
             }
 
@@ -98,7 +98,7 @@ public class HandOut implements Mission {
             }
 
             // 从车二维码解析任务
-            case "CMD_SQRCODE:":{
+            case "CMD_SQR_CODE:":{
                 TaskEnum.SQRCODE.execute(subCmd);
                 break;
             }

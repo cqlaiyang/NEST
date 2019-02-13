@@ -1,2 +1,2 @@
-include ':app', ':qrcodecore', ':zbar', ':zxing'
+include ':app', ':qrcodecore', ':zbar', ':zxing', ':passwordinputdialog'
 include ':openCVLibrary342'

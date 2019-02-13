@@ -3,7 +3,7 @@ package com.example.laiyang.nest.taskEnum.shape;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.example.laiyang.nest.camera.utils.SystemValue;
+import com.example.laiyang.nest.utils.Logger;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -123,7 +123,7 @@ public class ShapeUtils {
         if (ROIArea == null) {
             ROIArea = new Rect(new Point(0, 0), GrayMat.size());
             Log.e("laiyang666", "没有找到图像");
-            throw new Exception("没有找到屏幕区域！");
+            Logger.e("error_Get_ROI","没有找到图像");
         }
         // 目前还存在问题就是截取的图像
         // 会存在截取过多或者过少的情况

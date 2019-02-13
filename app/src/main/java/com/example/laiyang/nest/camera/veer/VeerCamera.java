@@ -167,7 +167,7 @@ public class VeerCamera {
             count2++;
         } else if (count2 == 2) {
             Reset();
-            count2++;
+            count2 = 0;
         }
 
     }
@@ -285,6 +285,7 @@ public class VeerCamera {
         // 释放内存
         GrayMat.release();
         contour.release();
+        Srcmat.release();
         Top.release();
         k.release();
         gradx.release();

@@ -1,8 +1,9 @@
-package com.example.laiyang.nest.taskEnum.shape;
+package com.example.laiyang.nest.taskEnum.shape.older;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.example.laiyang.nest.taskEnum.shape.ShapeUtils;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -33,8 +34,6 @@ public class Shape {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        DebugBitMap = Bitmap.createBitmap(ROIMat.cols(), ROIMat.rows(), Bitmap.Config.RGB_565);
-        Utils.matToBitmap(ROIMat, DebugBitMap);
         Log.d("laiyang666", "你是猪吗？");
         // 对ROI区域进行轮廓提取与筛选得到的是一个只含内轮廓的链表
         List<MatOfPoint> ShapeContours = new ArrayList<MatOfPoint>();

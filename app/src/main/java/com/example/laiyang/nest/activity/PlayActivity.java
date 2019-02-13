@@ -1,6 +1,7 @@
 package com.example.laiyang.nest.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,7 +31,6 @@ import com.example.laiyang.nest.camera.utils.ContentCommon;
 import com.example.laiyang.nest.camera.utils.CustomBuffer;
 import com.example.laiyang.nest.camera.utils.MyRender;
 import com.example.laiyang.nest.camera.utils.SystemValue;
-import com.example.laiyang.nest.camera.veer.VeerCamera;
 import com.example.laiyang.nest.connect.Connect_transport;
 import com.example.laiyang.nest.activity.queue.HandOut;
 import com.example.laiyang.nest.taskEnum.TaskEnum;
@@ -39,8 +39,6 @@ import com.example.laiyang.nest.taskEnum.qrCode.QrCode_decode;
 import com.example.laiyang.nest.taskManager.MissionQueue;
 import com.example.laiyang.nest.threadPool.ThreadPoolProxyFactory;
 import com.example.laiyang.nest.utils.MessageFilter;
-import com.google.zxing.qrcode.QRCodeReader;
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
 import java.nio.ByteBuffer;
@@ -160,7 +158,9 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Start: {
-                connect_transport.DelaySend("Start Car");
+                SharedPreferences pref = getSharedPreferences("password",MODE_PRIVATE);
+                String password = pref.getString("password","000000");
+                connect_transport.send(password);
                 break;
             }
             case R.id.Trffic: {
@@ -192,7 +192,7 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
                 break;
             }
             case R.id.Test:{
-                VeerCamera.CarMistake();
+                TaskEnum.FRONT.execute();
             }
 
         }
@@ -254,14 +254,26 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
 
     public void connectSCM() {
 
-        //连接操作是一个操作过后就是一个垃圾线程
-        //最好使用线程池来进行操作
-        ThreadPoolProxyFactory.getNormalThreadPoolProxy().excute(new Runnable() {
-            @Override
-            public void run() {
-                connect_transport.Wificonnect(handler, wifi_Init());
-            }
-        });
+        if (MeanActivity.instance.isWifiConnect){
+
+            //连接操作是一个操作过后就是一个垃圾线程
+            //最好使用线程池来进行操作
+            ThreadPoolProxyFactory.getNormalThreadPoolProxy().excute(new Runnable() {
+                @Override
+                public void run() {
+                    connect_transport.Wificonnect(handler, wifi_Init());
+                }
+            });
+        } else if (MeanActivity.instance.isUsbConnect) {
+            ThreadPoolProxyFactory.getNormalThreadPoolProxy().excute(new Runnable() {
+                @Override
+                public void run() {
+                    connect_transport.serialConnect(handler);
+                }
+            });
+
+        }
+
     }
 
     private String wifi_Init() {

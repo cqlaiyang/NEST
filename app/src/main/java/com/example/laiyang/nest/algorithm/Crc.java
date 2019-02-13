@@ -31,8 +31,8 @@ public class Crc {
 
     private static byte[] intToBytes(int value)  {
         byte[] src = new byte[2];
-        src[1] =  (byte) ((value>>8) & 0xFF);
-        src[0] =  (byte) (value & 0xFF);
+        src[0] =  (byte) ((value>>8) & 0xFF);
+        src[1] =  (byte) (value & 0xFF);
         return src;
     }
     public static StringBuilder byte2hex(byte[] data) {

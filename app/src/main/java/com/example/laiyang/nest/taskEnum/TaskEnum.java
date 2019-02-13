@@ -8,6 +8,7 @@ package com.example.laiyang.nest.taskEnum;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.example.laiyang.nest.algorithm.Crc;
 import com.example.laiyang.nest.camera.veer.VeerCamera;
 import com.example.laiyang.nest.connect.Connect_transport;
 import com.example.laiyang.nest.taskEnum.carPlate.latest.LatestPlate;
@@ -15,8 +16,8 @@ import com.example.laiyang.nest.taskEnum.carPlate.oldPlate.Plate;
 import com.example.laiyang.nest.taskEnum.landMark.LandMark;
 import com.example.laiyang.nest.activity.queue.SendQueue;
 import com.example.laiyang.nest.taskEnum.qrCode.MixRecong;
-import com.example.laiyang.nest.taskEnum.shape.Shape;
-import com.example.laiyang.nest.taskEnum.shape.ShapeStatistics;
+import com.example.laiyang.nest.taskEnum.shape.latest.Shape;
+import com.example.laiyang.nest.taskEnum.shape.older.ShapeStatistics;
 import com.example.laiyang.nest.taskEnum.trafficLight.TrafficLight;
 import com.example.laiyang.nest.taskManager.Mission;
 import com.example.laiyang.nest.taskManager.MissionQueue;
@@ -24,10 +25,13 @@ import com.example.laiyang.nest.taskManager.MissionQueueFactory;
 import com.example.laiyang.nest.threadPool.ThreadPoolProxyFactory;
 import com.example.laiyang.nest.utils.GetPicture;
 import com.example.laiyang.nest.utils.Logger;
+import com.example.laiyang.nest.utils.Turn;
 
 import org.opencv.core.Rect;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -69,11 +73,16 @@ public enum TaskEnum implements Mission {
 
                         result = LatestPlate.latestPlate(Pic);
                         if (result.length() < 1 || result.equals("233333")) {
+
+
                             Connect_transport.send("NO_TARGET");
 
                         } else {
                             SendQueue sendQueue = new SendQueue(result);
                             missionQueue.add(sendQueue);
+
+                            //摄像头复位
+                            VeerCamera.Reset();
                         }
 
                     } catch (Exception e) {
@@ -104,8 +113,9 @@ public enum TaskEnum implements Mission {
                 public void run() {
 
                     // 定义一个Map用于存取映射数据
-                    Map<String, Integer> shapeResult = new HashMap<String, Integer>();
+                 //   Map<String, Integer> shapeResult = new HashMap<String, Integer>();
 
+                    List<Map<String,Integer>> shapeResult = new ArrayList<>();
 
                     // 得到当前图片
                     String result = "";
@@ -115,28 +125,32 @@ public enum TaskEnum implements Mission {
                     try {
                         result = Plate.PlateRecognition(Pic);
                     } catch (Exception e) {
-                        Logger.e("laiyang666",e + "");
+                        Logger.e("laiyang666", e + "");
                         e.printStackTrace();
                     }
                     if (result.length() > 1) {
-                            Connect_transport.send("NO_TARGET");
-                        } else {
-                            // 图形识别
-                            shapeResult = Shape.ShapeRecognition(Pic);
+                        Connect_transport.send("NO_TARGET");
+                    } else {
 
-                            for (Map.Entry<String,Integer> entry : shapeResult.entrySet()) {
-                                Log.d("laiyang666","Key = " + entry.getKey() + ",Value" + entry.getValue());
-                            }
+                        // 图形识别
+                        shapeResult = Shape.ShapeRecognition(Pic);
 
-                            // 统计
-                            String Numbers = ShapeStatistics.Statistics(shapeResult);
+                   /*     for (Map.Entry<String, Integer> entry : shapeResult.entrySet()) {
+                            Log.d("laiyang666", "Key = " + entry.getKey() + ",Value" + entry.getValue());
+                        }*/
 
-                            Log.d("laiyang666", "" + Numbers);
-                            // 发送回去
-                            SendQueue ShapeMessage = new SendQueue(Numbers);
-                            missionQueue.add(ShapeMessage);
-                        }
-                  
+                        // 统计
+                        String Numbers = com.example.laiyang.nest.taskEnum.shape.latest.ShapeStatistics.first(shapeResult);
+
+                        Log.d("laiyang666", "" + Numbers);
+                        // 发送回去
+                        SendQueue ShapeMessage = new SendQueue(Numbers);
+                        missionQueue.add(ShapeMessage);
+
+                        //摄像头复位
+                        VeerCamera.Reset();
+                    }
+
 
                 }
             });
@@ -162,6 +176,8 @@ public enum TaskEnum implements Mission {
 
                     SendQueue sendQueue = new SendQueue(Color);
                     missionQueue.add(sendQueue);
+                    //摄像头复位
+                    VeerCamera.Reset();
                 }
             });
         }
@@ -216,36 +232,99 @@ public enum TaskEnum implements Mission {
         }
     },
 
-    SQRCODE("CMD_SQRCODE"){
+    SQRCODE("CMD_SQR_CODE") {
         @Override
         public void execute() {
 
         }
 
         @Override
-        public void execute(String s) {
-            s = s.substring(10,11);
-            MissionQueueFactory.getMissionQueue().add(new SendQueue(s));
-            Log.d("laiyang666","" + s);
+        public void execute(String result) {
+            missionQueue.start();
+
+            if (result == null) {
+                if (count == 0) {
+                    count++;
+                    missionQueue.add(new SendQueue(new byte[]{(byte) 0x03, (byte) 0x05, (byte) 0x14, (byte) 0x45, (byte) 0xDE, (byte) 0x92}));
+                } else {
+                    count = 0;
+                    missionQueue.add(new SendQueue("3"));
+                }
+
+            } else if (count == 0) {
+                count++;
+                // 算法
+                Map<String, Byte> table = new HashMap<String, Byte>();
+                byte[] input = new byte[4];
+                table.put("A", (byte) 0x00);
+                table.put("B", (byte) 0x01);
+                table.put("C", (byte) 0x02);
+                table.put("D", (byte) 0x03);
+                table.put("E", (byte) 0x04);
+                table.put("U", (byte) 0x05);
+                table.put("J", (byte) 0x10);
+                table.put("I", (byte) 0x11);
+                table.put("H", (byte) 0x12);
+                table.put("G", (byte) 0x13);
+                table.put("F", (byte) 0x14);
+                table.put("V", (byte) 0x15);
+                table.put("K", (byte) 0x20);
+                table.put("L", (byte) 0x21);
+                table.put("M", (byte) 0x22);
+                table.put("N", (byte) 0x23);
+                table.put("O", (byte) 0x24);
+                table.put("W", (byte) 0x25);
+                table.put("T", (byte) 0x30);
+                table.put("S", (byte) 0x31);
+                table.put("R", (byte) 0x32);
+                table.put("Q", (byte) 0x33);
+                table.put("P", (byte) 0x34);
+                table.put("X", (byte) 0x35);
+                for (int i = 0; i < 4; i++) {
+                    if (i == 0) {
+                        input[0] = table.get(result.substring(11, 12));
+                    } else if (i == 1) {
+                        input[1] = table.get(result.substring(13, 14));
+                    } else if (i == 2) {
+                        input[2] = table.get(result.substring(15, 16));
+                    } else {
+                        input[3] = table.get(result.substring(17, 18));
+                    }
+                }
+                Logger.d("laiyang666", Turn.byte2hex(input) + "-" + Turn.byte2hex(Crc.toCrc(input)));
+                missionQueue.add(new SendQueue(new byte[]{(byte) 0x03, (byte) 0x05, (byte) 0x14, (byte) 0x45, (byte) 0xDE, (byte) 0x92}));
+            } else {
+                count = 0;
+                // 光档
+                result = result.substring(22, 23);
+                missionQueue.add(new SendQueue(result));
+            }
+
+
         }
     },
 
     FRONT("FRONT") {
         @Override
         public void execute() {
-            if (VeerCamera.count2 == 0) {
-                VeerCamera.Reset();
-            }
 
             // 计算屏幕中心位置
-            Bitmap bitmap = Bitmap.createBitmap(GetPicture.getPicture());
+            Bitmap bitmap = GetPicture.getPicture();
+
             Rect rect = VeerCamera.correction(bitmap);
 
             // 判断是否找到屏幕区域；没有找到就转动摄像头
-            if (rect.height == bitmap.getHeight() && rect.width == bitmap.getWidth() && VeerCamera.count2 < 2) {
+            if (rect.height == bitmap.getHeight() && rect.width == bitmap.getWidth() && VeerCamera.count2 <= 2) {
                 VeerCamera.CarMistake();
 
-                TaskEnum.RIGHT.execute();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                TaskEnum.FRONT.execute();
             } else {
                 VeerCamera.count2 = 0;
                 // 计算与标准点的偏差
@@ -258,6 +337,17 @@ public enum TaskEnum implements Mission {
                     e.printStackTrace();
                 }
             }
+        }
+
+        @Override
+        public void execute(String s) {
+
+        }
+    },
+    RFID("RFID") {
+        @Override
+        public void execute() {
+
         }
 
         @Override
@@ -341,6 +431,7 @@ public enum TaskEnum implements Mission {
     private static MissionQueue missionQueue = MissionQueueFactory.getMissionQueue();
     private String CMD;
     public Bitmap Pic;
+    public static int count = 0;
 
     TaskEnum(String CMD) {
         this.CMD = CMD;

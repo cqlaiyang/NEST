@@ -7,29 +7,52 @@ package com.example.laiyang.nest;
  */
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.example.laiyang.nest.activity.MeanActivity;
+import com.example.laiyang.nest.utils.Logger;
+import com.hoho.android.usbserial.driver.UsbSerialDriver;
+import com.hoho.android.usbserial.driver.UsbSerialPort;
+import com.hoho.android.usbserial.driver.UsbSerialProber;
+import com.hoho.android.usbserial.util.HexDump;
+import com.hoho.android.usbserial.util.SerialInputOutputManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import vstc2.nativecaller.NativeCaller;
 
 public class BootPageActivity extends AppCompatActivity {
-
+    private UsbManager mUsbManager;
+    private UsbDeviceConnection connection;
+    private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
+    private List<UsbSerialPort> mEntries = new ArrayList<UsbSerialPort>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boot_page);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
 
 
         String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -46,8 +69,12 @@ public class BootPageActivity extends AppCompatActivity {
 
         NativeCaller.SetAPPDataPath("/data/data/com.example.laiyang.nest/files");
         Log.d("eye4","" +getApplicationContext().getFilesDir().getAbsolutePath());
+
         delayshow();
     }
+
+
+
 
     /**
      * @method 设置延迟时间；
