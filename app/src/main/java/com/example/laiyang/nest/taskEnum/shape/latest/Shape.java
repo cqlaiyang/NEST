@@ -119,7 +119,7 @@ public class Shape {
         Mat kMin = Imgproc.getStructuringElement(Imgproc.MORPH_RECT,new Size(6,6),new Point(3,3));
         Mat kMax = Imgproc.getStructuringElement(Imgproc.MORPH_RECT,new Size(12,12),new Point(6,6));
 
-        // 形态学开操作(部分进行)
+    /*    // 形态学开操作(部分进行)
         Imgproc.morphologyEx(whiteMat,whiteMat,Imgproc.MORPH_OPEN,kMin);
         Imgproc.morphologyEx(redMat,redMat,Imgproc.MORPH_OPEN,kMin);
         Imgproc.morphologyEx(greenMat,greenMat,Imgproc.MORPH_OPEN,kMin);
@@ -127,10 +127,10 @@ public class Shape {
         Imgproc.morphologyEx(yellowMat,yellowMat,Imgproc.MORPH_OPEN,kMin);
         Imgproc.morphologyEx(pinkMat,pinkMat,Imgproc.MORPH_OPEN,kMin);
         Imgproc.morphologyEx(cyanMat,cyanMat,Imgproc.MORPH_OPEN,kMin);
-        Imgproc.morphologyEx(blackMat,blackMat,Imgproc.MORPH_OPEN,kMin);
+        Imgproc.morphologyEx(blackMat,blackMat,Imgproc.MORPH_OPEN,kMin);*/
 
         Rect rect = new Rect(30,30,blackMat.width() - 60 ,blackMat.height() -60);
-       // blackMat = blackMat.submat(rect);
+        blackMat = blackMat.submat(rect);
 
         // 定义容器
         List<Mat> binaryMat = new ArrayList<Mat>();

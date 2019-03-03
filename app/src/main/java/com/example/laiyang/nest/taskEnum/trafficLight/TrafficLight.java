@@ -73,10 +73,12 @@ public class TrafficLight {
         int YellowValueMin = 160;
         int YellowValueMax = 256;
         //------------------------------绿
-        int GreenHueMin = 60;
-        int GreenHueMax = 95;
+        int GreenHueMin = 50;
+        int GreenHueMax = 80;
+
         int GreenSatMin = 50;
         int GreenSatMax = 200;
+
         int GreenValueMin = 0;
         int GreenValueMax = 256;
 

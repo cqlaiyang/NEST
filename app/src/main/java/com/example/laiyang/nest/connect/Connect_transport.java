@@ -179,6 +179,8 @@ public class Connect_transport {
                             Logger.i("error", "WIFI发送成功");
                             bOutputStream.write(sendData, 0, sendData.length);
                             bOutputStream.flush();
+
+
                             Message message = new Message();
                             message.what = 2;
                             message.obj = result;

@@ -425,14 +425,10 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
         qrCallBack = qrCallBack2;
 
         isTakepic = true;
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
+        zBarView.decodeQRCode(mBmp);
         // 通过Zxing解析；
-        zXingView.decodeQRCode(QrCode_decode.GetBinay(mBmp));
+        //zXingView.decodeQRCode(mBmp);
 
         ThreadPoolProxyFactory.getNormalThreadPoolProxy().excute(new Runnable() {
             @Override
@@ -440,7 +436,7 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
 
                 // 延时6秒
                 try {
-                    Thread.sleep(6000);
+                    Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -450,7 +446,7 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
                 if (QrResult == null) {
 
                     Logger.d("laiyang666","开始识别！");
-                    zBarView.decodeQRCode(QrCode_decode.GetBinay(mBmp));
+                    zXingView.decodeQRCode(mBmp);
                 }
 
                 // 因为Zbar识别特别快；
@@ -458,7 +454,7 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
                 // 进行Zbar识别以后；判断是否成功；
                 // 如果失败，回调null；
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(3500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -109,18 +109,19 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
      */
     @OnClick(R.id.start)
     void startView() {
-        SharedPreferences pref = getSharedPreferences("password",MODE_PRIVATE);
-        String password = pref.getString("password",null);
-        String[] error = new String[]{"7","8","9",};
-        if (password == null){
-            Toast.makeText(this,"密码错误请重新输入",Toast.LENGTH_SHORT).show();
+        SharedPreferences pref = getSharedPreferences("password", MODE_PRIVATE);
+        String password = pref.getString("password", null);
+        String[] error = new String[]{"7", "8", "9",};
+        if (password == null) {
+            Toast.makeText(this, "密码错误请重新输入", Toast.LENGTH_SHORT).show();
             checkPasswords();
             return;
-        }else {
-            for (int i = 0 ; i < error.length; i ++){
-                if (password.substring(0,1).equals(error[i]) ||
-                        password.substring(1,2).equals(error[i])){
-                    Toast.makeText(this,"密码错误请重新输入",Toast.LENGTH_SHORT).show();
+        } else {
+            for (int i = 0; i < error.length; i++) {
+                if (password.substring(0, 1).equals(error[i]) ||
+                        password.substring(1, 2).equals(error[i]) ||
+                        password.substring(2, 3).equals(error[i])) {
+                    Toast.makeText(this, "密码错误请重新输入", Toast.LENGTH_SHORT).show();
                     checkPasswords();
                     return;
                 }
@@ -208,8 +209,8 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
         listAdapter = new SearchListAdapter(this);
 
         // 输入启动密码
-        SharedPreferences.Editor editor = getSharedPreferences("password",MODE_PRIVATE).edit();
-        editor.putString("password",null);// 初始化密码
+        SharedPreferences.Editor editor = getSharedPreferences("password", MODE_PRIVATE).edit();
+        editor.putString("password", null);// 初始化密码
         editor.apply();
         checkPasswords();
 
@@ -225,8 +226,8 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
                 .setMoney("   ").setCompleteListener(new DialogCompleteListener() {
             @Override
             public void dialogCompleteListener(String money, String pwd) {
-                SharedPreferences.Editor editor = getSharedPreferences("password",MODE_PRIVATE).edit();
-                editor.putString("password",pwd);
+                SharedPreferences.Editor editor = getSharedPreferences("password", MODE_PRIVATE).edit();
+                editor.putString("password", pwd);
                 editor.apply();
             }
         }).show();
@@ -350,17 +351,19 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
         final String usbid = String.format("Vendor %s  ，Product %s",
                 HexDump.toHexString((short) device.getVendorId()),
                 HexDump.toHexString((short) device.getProductId()));
-       // Message msg = LeftFragment.showidHandler.obtainMessage(22, usbid);
+        // Message msg = LeftFragment.showidHandler.obtainMessage(22, usbid);
         //msg.sendToTarget();
         MeanActivity.sPort = port;
         if (sPort != null) {
             controlusb();  //使用usb功能
         }
     }
+
     // 在打开usb设备前，弹出选择对话框，尝试获取usb权限
     private void openUsbDevice() {
         tryGetUsbPermission();
     }
+
     /**
      * 已经得到了指定的USB串口，现在进行设置
      */
@@ -433,6 +436,7 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
             }
         }
     }
+
     private final BroadcastReceiver mUsbPermissionActionReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -489,6 +493,7 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
     }
 
     //--------------------------------------------USB连接------------------------------------------------------------------------------------------
+
     /**
      * setting 连接选项；
      */

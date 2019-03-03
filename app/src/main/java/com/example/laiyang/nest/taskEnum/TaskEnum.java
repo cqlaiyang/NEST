@@ -314,7 +314,7 @@ public enum TaskEnum implements Mission {
             Rect rect = VeerCamera.correction(bitmap);
 
             // 判断是否找到屏幕区域；没有找到就转动摄像头
-            if (rect.height == bitmap.getHeight() && rect.width == bitmap.getWidth() && VeerCamera.count2 <= 2) {
+            if (rect.height == bitmap.getHeight() && rect.width == bitmap.getWidth() && VeerCamera.count2 < 2) {
                 VeerCamera.CarMistake();
 
 

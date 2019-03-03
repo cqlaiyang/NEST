@@ -144,15 +144,18 @@ public class VeerCamera {
      */
     public static void staticCarMistake() {
         if (count == 0) {
-            MinDown();
-            count++;
-        } else if (count == 1) {
+
             staticMinLift();
             count++;
-        } else if (count == 2) {
+        } else if (count == 1) {
+
             staticMinRight();
             count++;
+        } else if (count == 2) {
+            MinDown();
+            count++;
         } else if (count == 3) {
+
             Reset();
             count++;
         }

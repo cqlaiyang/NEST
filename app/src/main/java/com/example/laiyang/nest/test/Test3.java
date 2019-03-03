@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Test3 {
     public static void main(String[] args){
-        String input = "入库信息：E，立体车库，2层；挡位信息/3；(<3,4,5,7,8,9,11>/<1,2,3,4,5,6>)/挡位：2";
+        String input = "入库信息：E，立体车库，2层；挡位信息：1；(<3,4,5,7,8,9,11>/<1,2,3,4,5,6>)/挡位：2";
         // 首先得到参数和密码子
         int[] parm = new int[]{Integer.decode(input.substring(24,25)),
                 Integer.parseInt(input.substring(26,27)),

@@ -48,9 +48,7 @@ public class ShapeDector {
                 float specific = width / heigt;
                 double RectArea = rect.size.area();
                 double ShapeArea = Imgproc.contourArea(ShapeMatofPoint, false);
-                if (ShapeArea / RectArea < 0.6) {
-                    shape = "triangle";
-                } else if ((double) specific >= 0.8D && (double) specific <= 1.2D) {
+               if ((double) specific >= 0.8D && (double) specific <= 1.2D) {
                     shape = "square";
                 } else if (RectArea >= 0.9D * ShapeArea && RectArea <= 1.1D * ShapeArea) {
                     shape = "rectangle";
