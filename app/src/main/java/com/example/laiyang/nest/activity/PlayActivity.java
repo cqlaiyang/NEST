@@ -434,7 +434,7 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
             @Override
             public void run() {
 
-                // 延时6秒
+                // 延时1.5秒
                 try {
                     Thread.sleep(1500);
                 } catch (InterruptedException e) {
@@ -454,7 +454,7 @@ public class PlayActivity extends AppCompatActivity implements BridgeService.Pla
                 // 进行Zbar识别以后；判断是否成功；
                 // 如果失败，回调null；
                 try {
-                    Thread.sleep(3500);
+                    Thread.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -162,6 +162,7 @@ public class VeerCamera {
     }
 
     public static void CarMistake() {
+
         if (count2 == 0) {
             staticMinLift();
             count2++;

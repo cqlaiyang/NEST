@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.laiyang.nest">
+    package="com.example.laiyang.nest"
+    tools:ignore="ExtraText">
 
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <!-- 访问INTERNET的权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -45,17 +44,18 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    //--------------------------------------WiFi网络权限------------------------------------
+    <!-- 在SD卡中创建文件与删除文件权限 -->
+    <!-- *************************************网络权限 *********************************** -->
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    //--------------------------------------WiFi网络权限------------------------------------
+    <!--*************************************WiFi网络权限******************************* -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 在SD卡中创建文件与删除文件权限 -->
-
     <application
         android:name=".application.APP"
         android:allowBackup="true"
@@ -65,16 +65,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="icon,label,theme">
-        //-----------------------------------------------------------------------
+        <!--****************************************************** -->
         <activity android:name=".BootPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        //----------------------------------------------------------------------------
-        //---------------------------------------------------------------------------
+        <!-- ***************************************************************** -->
+        <!-- ****************************************************************-->
         <activity android:name=".activity.MeanActivity" />
         <activity android:name=".activity.PassiveActivity" />
         <activity android:name=".activity.PlayActivity"></activity>

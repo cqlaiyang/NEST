@@ -6,7 +6,6 @@ import com.example.laiyang.nest.activity.PlayActivity;
 import com.example.laiyang.nest.activity.queue.SendQueue;
 import com.example.laiyang.nest.camera.veer.VeerCamera;
 import com.example.laiyang.nest.taskManager.MissionQueueFactory;
-import com.example.laiyang.nest.utils.Logger;
 
 /**
  * Created by laiyang at
@@ -57,46 +56,32 @@ public class MixRecong {
                         MissionQueueFactory.getMissionQueue().start();
 
                         result = result.trim();
-
+                        // 解决Zbar的一个Bug
                         if ((result.charAt(0) & 0xffff)== (char) 0xfeff){
                             result = result.substring(1);
                         }
+                        //----------------------------------------------------------------------------------------------------------------------------------------------
+                        String[] strArrary = result.split(",");
+                        for (int i = 0; i < strArrary.length;i++){
+                            System.out.println(i + "-" + strArrary[i]);
+                        }
 
-                        // 摄像头
-                        VeerCamera.count = 0;
-                        VeerCamera.Reset();
-                            int M02 = Integer.decode(result.substring(5, 6));
-                            int M03_1 = Integer.decode(result.substring(8, 10));
-                            int M03_2 = Integer.decode(result.substring(11, 13));
-                            int M03_3 = Integer.decode(result.substring(14, 16));
-                            int M03_4 = Integer.decode(result.substring(17, 19));
-                            String M04 = result.substring(25, 26);
+                        int M02_1 = Integer.parseInt(strArrary[0].substring(12,14)) - 10;
+                        int M02_2 = Integer.parseInt(strArrary[1].substring(0,2)) - 10;
+                        int M02_3 = Integer.parseInt(strArrary[2].substring(0,2)) - 10;
+                        int M02_4 = Integer.parseInt(strArrary[3].substring(0,2)) - 10;
 
-                            int zhuche = 0;
-                            if (M04.equals("A")) {
-                                zhuche = 0;
-                            } else if (M04.equals("B")) {
-                                zhuche = 1;
-                            } else if (M04.equals("C")) {
-                                zhuche = 2;
-                            } else if (M04.equals("D")) {
-                                zhuche = 3;
-                            } else if (M04.equals("E")) {
-                                zhuche = 4;
-                            } else if (M04.equals("F")) {
-                                zhuche = 5;
-                            } else if (M04.equals("G")) {
-                                zhuche = 6;
-                            } else {
-                                Logger.d("laiyang666", "" + M04);
-                            }
+                        byte[] M03 = strArrary[3].substring(8,10).getBytes();
+                        byte[] M04 = strArrary[3].substring(16,18).getBytes();
+                        byte[] M05 = strArrary[4].substring(5,6).getBytes();
 
-                            byte[] bytes = new byte[]{(byte) M02, (byte) M03_1, (byte) M03_2, (byte) M03_3, (byte) M03_4, (byte) zhuche};
-                            MissionQueueFactory.getMissionQueue().add(new SendQueue(bytes));
+                        byte[] bytes = new byte[]{(byte)0x03,0x05,0x14,0x45, (byte) 0xDE,(byte) 0x92,M03[0],M03[1],M04[0],M04[1],M05[0]};
+
+                        MissionQueueFactory.getMissionQueue().add(new SendQueue(bytes));
                     }
 
 
-                }
+                }//(byte)0x03,0x05,0x14,0x45, (byte) 0xDE,(byte) 0x92
 
             }
         });

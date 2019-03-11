@@ -18,7 +18,7 @@ public class Test6 {
         System.out.println("");
         String str2 = new String("www.runoob.com");
         System.out.println("转义字符返回值 :" );
-        for (String retval: str2.split("\\.", 3)){
+        for (String retval: str2.split("\\ .", 3)){
             System.out.println(retval);
         }
 

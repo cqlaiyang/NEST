@@ -9,6 +9,7 @@ import com.example.laiyang.nest.activity.MeanActivity;
 
 import android.serialport.SerialPort;
 
+import com.example.laiyang.nest.activity.PlayActivity;
 import com.example.laiyang.nest.threadPool.ThreadPoolProxy;
 import com.example.laiyang.nest.threadPool.ThreadPoolProxyFactory;
 import com.example.laiyang.nest.utils.Logger;
@@ -24,6 +25,8 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Connect_transport {
@@ -48,6 +51,10 @@ public class Connect_transport {
     // Handler 多线程通信
     public static Handler reHandler = null;
 
+    // 心跳包
+    private Timer timer = new Timer();
+    private TimerTask task;
+
     /**
      * 连接Socket通讯服务端口！
      *
@@ -66,9 +73,40 @@ public class Connect_transport {
 
             // 开启接受线程
             wifiReceiveThread.start();
+
+            // 心跳包防止掉线
+            SendBeatData();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 定时发送数据
+     * 模拟心跳
+     * 断线重新连接
+     */
+    private void SendBeatData(){
+        if (timer == null){
+            timer = new Timer();
+        }
+        if (task == null){
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        bOutputStream.write(("test").getBytes("UTF-8"),0,"test".length());
+                        bOutputStream.flush();
+                    } catch (IOException e) {
+
+                        // 发送失败就是断开了或者出现了其它错误所以重新连接
+                        PlayActivity.instance.connectSCM();
+                        e.printStackTrace();
+                    }
+                }
+            };
+        }
+        timer.schedule(task,2000,1000);
     }
 
     public void serialConnect(Handler reHandler) {
@@ -188,6 +226,7 @@ public class Connect_transport {
                             Thread.sleep(100);
                         }
                     } catch (IOException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -205,8 +244,10 @@ public class Connect_transport {
                         reHandler.sendMessage(message);
                         Thread.sleep(100);
                     } catch (IOException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     } catch (InterruptedException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     }
                 }
@@ -244,8 +285,10 @@ public class Connect_transport {
                             Thread.sleep(100);
                         }
                     } catch (IOException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     } catch (InterruptedException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     }
                 } else if (MeanActivity.instance.isUsbConnect) {// 使用串口发送数据
@@ -261,8 +304,10 @@ public class Connect_transport {
                         reHandler.sendMessage(message);
                         Thread.sleep(100);
                     } catch (IOException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     } catch (InterruptedException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     }
                 }
@@ -302,8 +347,10 @@ public class Connect_transport {
                             reHandler.sendMessage(message);
                         }
                     } catch (IOException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     } catch (InterruptedException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     }
                 } else if (MeanActivity.instance.isUsbConnect) {// 使用串口发送数据
@@ -319,8 +366,10 @@ public class Connect_transport {
                         message.obj = result;
                         reHandler.sendMessage(message);
                     } catch (IOException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     } catch (InterruptedException e) {
+                        PlayActivity.instance.connectSCM();
                         e.printStackTrace();
                     }
                 }

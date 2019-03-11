@@ -71,7 +71,6 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
     private boolean UsbConnect = false;
     private boolean WifiConnect = false;
     private boolean isConnect = false;
-    private boolean iscar = false;
     public boolean isUsbConnect = false;
     public boolean isWifiConnect = false;
     private Plate plate;
@@ -90,6 +89,8 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
     private static final String STR_DID = "did";
     private Intent intentbrod;
     private SearchListAdapter listAdapter = null;
+    private String strPwd;
+    private String strDiD;
     //----------------------------关于相机------------------------------------------
 
 
@@ -149,18 +150,7 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
          */
         Intent intent = new Intent();
         String strUser = "admin";
-        String strPwd;
-        String strDiD;
-        if (iscar) {
-            strPwd = "88888888";
-            strDiD = "VSTG027289SZLXJ";
-        } else {
-            strPwd = "88888888";
-            strDiD = "VSTD135448VYJWF";
-            // 调试摄像头
-            /*strDiD = "VSTA305435FHUWH";
-            strPwd = "88888888";*/
-        }
+
         if (option == ContentCommon.INVALID_OPTION) {
             option = ContentCommon.ADD_CAMERA;
         }
@@ -501,11 +491,20 @@ public class MeanActivity extends AppCompatActivity implements BridgeService.Ipc
         spinnerOpen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    iscar = true;
-                }
-                if (position == 1) {
-                    iscar = false;
+                if (position == 0) {//一队主摄像头
+                    strDiD = "VSTG027289SZLXJ";
+                    strPwd = "88888888";
+                    Log.d("laiyang666","" + strPwd + strDiD);
+                }else
+                if (position == 1) {//二队主摄像头
+                    strDiD = "VSTD135448VYJWF";
+                    strPwd = "88888888";
+                }else if (position == 2){//一队副摄像头
+                    strDiD = "VSTG336825GNKNB";
+                    strPwd = "888888";
+                }else if (position == 3){//二队副摄像头
+                    strDiD = "VSTA305435FHUWH";
+                    strPwd = "88888888";
                 }
                 String s = parent.getItemAtPosition(position).toString();
                 Toast.makeText(MeanActivity.this, s + position, Toast.LENGTH_SHORT).show();

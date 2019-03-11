@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="bgaqrcode_camera_preview" type="id"/>
     <declare-styleable name="QRCodeView">
         <!-- 扫描框距离toolbar底部的距离，默认值为90dp -->
         <attr format="dimension|reference" name="qrcv_topOffset"/>
@@ -71,5 +72,4 @@
         <!-- 是否显示定位点，默认值为false -->
         <attr format="boolean" name="qrcv_isShowLocationPoint"/>
     </declare-styleable>
-    <item name="bgaqrcode_camera_preview" type="id"/>
 </resources>

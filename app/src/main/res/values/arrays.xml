@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="choice">
-        <item>小车</item>
-        <item>调试</item>
+        <item>一队主摄</item>
+        <item>二队主摄</item>
+        <item>一队副摄</item>
+        <item>二队副摄</item>
+
     </string-array>
     <string-array name="connect">
         <item>WiFi连接</item>

@@ -31,11 +31,11 @@ int attr qrcv_tipTextSize 0x7f04001e
 int attr qrcv_toolbarHeight 0x7f04001f
 int attr qrcv_topOffset 0x7f040020
 int attr qrcv_verticalBias 0x7f040021
-int id bgaqrcode_camera_preview 0x7f0c0001
-int id center 0x7f0c0002
-int id inside 0x7f0c0003
-int mipmap qrcode_default_grid_scan_line 0x7f110001
-int mipmap qrcode_default_scan_line 0x7f110002
+int id bgaqrcode_camera_preview 0x7f0b0001
+int id center 0x7f0b0002
+int id inside 0x7f0b0003
+int mipmap qrcode_default_grid_scan_line 0x7f100001
+int mipmap qrcode_default_scan_line 0x7f100002
 int[] styleable QRCodeView { 0x7f040001, 0x7f040002, 0x7f040003, 0x7f040004, 0x7f040005, 0x7f040006, 0x7f040007, 0x7f040008, 0x7f040009, 0x7f04000a, 0x7f04000b, 0x7f04000c, 0x7f04000d, 0x7f04000e, 0x7f04000f, 0x7f040010, 0x7f040011, 0x7f040012, 0x7f040013, 0x7f040014, 0x7f040015, 0x7f040016, 0x7f040017, 0x7f040018, 0x7f040019, 0x7f04001a, 0x7f04001b, 0x7f04001c, 0x7f04001d, 0x7f04001e, 0x7f04001f, 0x7f040020, 0x7f040021 }
 int styleable QRCodeView_qrcv_animTime 0
 int styleable QRCodeView_qrcv_barCodeTipText 1

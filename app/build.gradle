@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
-    publishNonDefault true
     defaultConfig {
         applicationId "com.example.laiyang.nest"
 
@@ -42,11 +41,13 @@ android {
         jni.srcDirs = [] //This prevents the auto generation of Android.mk
         jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
     }
+
     externalNativeBuild {
         cmake {
             path 'src/main/cpp/CMakeLists.txt'
         }
     }
+
     productFlavors {
     }
     compileOptions {
@@ -108,7 +109,7 @@ dependencies {
     implementation(name: 'usbSerialForAndroid-debug', ext: 'aar')
     implementation(name: 'WaitProgressDialog-debug', ext: 'aar')
     //---------------------------------------------------------------------------------
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation project(':openCVLibrary342')
     implementation project(':qrcodecore')
     implementation project(':zbar')

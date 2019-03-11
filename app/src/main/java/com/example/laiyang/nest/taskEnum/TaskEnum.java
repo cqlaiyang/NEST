@@ -17,7 +17,7 @@ import com.example.laiyang.nest.taskEnum.landMark.LandMark;
 import com.example.laiyang.nest.activity.queue.SendQueue;
 import com.example.laiyang.nest.taskEnum.qrCode.MixRecong;
 import com.example.laiyang.nest.taskEnum.shape.latest.Shape;
-import com.example.laiyang.nest.taskEnum.shape.older.ShapeStatistics;
+import com.example.laiyang.nest.taskEnum.shape.latest.ShapeStatistics;
 import com.example.laiyang.nest.taskEnum.trafficLight.TrafficLight;
 import com.example.laiyang.nest.taskManager.Mission;
 import com.example.laiyang.nest.taskManager.MissionQueue;
@@ -113,9 +113,9 @@ public enum TaskEnum implements Mission {
                 public void run() {
 
                     // 定义一个Map用于存取映射数据
-                 //   Map<String, Integer> shapeResult = new HashMap<String, Integer>();
+                    //   Map<String, Integer> shapeResult = new HashMap<String, Integer>();
 
-                    List<Map<String,Integer>> shapeResult = new ArrayList<>();
+                    List<Map<String, Integer>> shapeResult = new ArrayList<>();
 
                     // 得到当前图片
                     String result = "";
@@ -140,18 +140,18 @@ public enum TaskEnum implements Mission {
                         }*/
 
                         // 统计
-                        String Numbers = com.example.laiyang.nest.taskEnum.shape.latest.ShapeStatistics.first(shapeResult);
+                        String ShapeNumbers = com.example.laiyang.nest.taskEnum.shape.latest.ShapeStatistics.first(shapeResult);
+                        String ColorNumbers = ShapeStatistics.getColor(shapeResult);
 
-                        Log.d("laiyang666", "" + Numbers);
+                        Logger.d("ShapeNumber", "" + ShapeNumbers);
+                        Logger.d("ColorShape", ColorNumbers);
                         // 发送回去
-                        SendQueue ShapeMessage = new SendQueue(Numbers);
+                        SendQueue ShapeMessage = new SendQueue(ShapeNumbers);
                         missionQueue.add(ShapeMessage);
 
                         //摄像头复位
                         VeerCamera.Reset();
                     }
-
-
                 }
             });
         }
@@ -172,7 +172,7 @@ public enum TaskEnum implements Mission {
                     //得到图片
                     Pic = GetPicture.getPicture();
                     //处理得到返回值
-                    String Color = TrafficLight.Detection(Pic);
+                    String Color = TrafficLight.Detection2(Pic);
 
                     SendQueue sendQueue = new SendQueue(Color);
                     missionQueue.add(sendQueue);
@@ -212,7 +212,7 @@ public enum TaskEnum implements Mission {
                     Logger.i("info", "立体标志物的像素点个数：" + pixl);
                     String reslut = "";
                     //判断像素点个数
-                    if (pixl > 800) {
+                    if (pixl > 1000) {
                         reslut = "SUCCESS";
                     } else {
                         reslut = "FAILURE";
@@ -304,38 +304,37 @@ public enum TaskEnum implements Mission {
         }
     },
 
+
     FRONT("FRONT") {
         @Override
         public void execute() {
 
+            VeerCamera.Reset();
+
             // 计算屏幕中心位置
-            Bitmap bitmap = GetPicture.getPicture();
-
-            Rect rect = VeerCamera.correction(bitmap);
-
-            // 判断是否找到屏幕区域；没有找到就转动摄像头
-            if (rect.height == bitmap.getHeight() && rect.width == bitmap.getWidth() && VeerCamera.count2 < 2) {
-                VeerCamera.CarMistake();
+            Pic = GetPicture.getPicture();
+            if (Pic == null) {
+                return;
+            }
 
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+           Rect rect1 = VeerCamera.correction(Pic);
 
-                TaskEnum.FRONT.execute();
+
+            if (rect1.height == Pic.getHeight() & rect1.width == Pic.getWidth()) {
+                VeerCamera.staticMinLift();
+                TaskEnum.Debug1.execute();
             } else {
-                VeerCamera.count2 = 0;
                 // 计算与标准点的偏差
-                int x = (int) (rect.x + (rect.size().width / 2)) - 640;
-                int y = (int) (rect.y + (rect.size().height / 2)) - 360;
-                Log.d("laiyang666", x + "-" + y);
+                int x = (int) (rect1.x + (rect1.size().width / 2)) - 640;
+                int y = (int) (rect1.y + (rect1.size().height / 2)) - 360;
+
                 try {
                     VeerCamera.doCorrection(x, y);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
             }
         }
 
@@ -425,7 +424,83 @@ public enum TaskEnum implements Mission {
         public void execute(String s) {
 
         }
-    },;
+    },
+    Debug1("1") {
+        @Override
+        public void execute() {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 计算屏幕中心位置
+            Pic = GetPicture.getPicture();
+            if (Pic == null) {
+                return;
+            }
+
+            Rect rect2 = VeerCamera.correction(Pic);
+
+
+            if (rect2.height == Pic.getHeight() && rect2.width == Pic.getWidth()) {
+                VeerCamera.staticMinRight();
+                TaskEnum.Debug2.execute();
+            } else {
+                // 计算与标准点的偏差
+                int x = (int) (rect2.x + (rect2.size().width / 2)) - 640;
+                int y = (int) (rect2.y + (rect2.size().height / 2)) - 360;
+
+                try {
+                    VeerCamera.doCorrection(x, y);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void execute(String s) {
+
+        }
+    },
+    Debug2("2") {
+        @Override
+        public void execute() {
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 计算屏幕中心位置
+            Pic = GetPicture.getPicture();
+            if (Pic == null) {
+                return;
+            }
+
+            Rect rect3 = VeerCamera.correction(Pic);
+
+
+            if (rect3.height == Pic.getHeight() && rect3.width == Pic.getWidth()) {
+                VeerCamera.Reset();
+            } else {
+                // 计算与标准点的偏差
+                int x = (int) (rect3.x + (rect3.size().width / 2)) - 640;
+                int y = (int) (rect3.y + (rect3.size().height / 2)) - 360;
+
+                try {
+                    VeerCamera.doCorrection(x, y);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void execute(String s) {
+
+        }
+    };
 
     // fix at 2018/12/9
     private static MissionQueue missionQueue = MissionQueueFactory.getMissionQueue();

@@ -33,7 +33,19 @@ public class ShapeDector {
                 break;
             }
             case 3: {
-                shape = "triangle";
+                // 三个角点也有可能是菱形
+                RotatedRect rect = Imgproc.minAreaRect(ShapeMatof2Point);
+
+                // 长宽比值，也有可能为宽比长
+                // 这里用得是最小外接矩形；不能用buningRect;
+                double RectArea = rect.size.area();
+                double ShapeArea = Imgproc.contourArea(ShapeMatofPoint, false);
+
+                if (RectArea >= 0.9D * ShapeArea && RectArea <= 1.1D * ShapeArea) {
+                    shape = "rhombus";
+                } else {
+                    shape = "triangle";
+                }
                 break;
             }
             // 角点为4个，还细分为菱形，正方形，矩形
@@ -48,7 +60,7 @@ public class ShapeDector {
                 float specific = width / heigt;
                 double RectArea = rect.size.area();
                 double ShapeArea = Imgproc.contourArea(ShapeMatofPoint, false);
-               if ((double) specific >= 0.8D && (double) specific <= 1.2D) {
+                if ((double) specific >= 0.8D && (double) specific <= 1.2D) {
                     shape = "square";
                 } else if (RectArea >= 0.9D * ShapeArea && RectArea <= 1.1D * ShapeArea) {
                     shape = "rectangle";
