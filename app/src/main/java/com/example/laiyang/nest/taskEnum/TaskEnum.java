@@ -166,6 +166,9 @@ public enum TaskEnum implements Mission {
         @Override
         public void execute() {
             missionQueue.start();
+
+
+
             ThreadPoolProxyFactory.getNormalThreadPoolProxy().excute(new Runnable() {
                 @Override
                 public void run() {

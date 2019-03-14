@@ -12,8 +12,8 @@ public class ShapeStatistics {
         int rectangle = 0;
         int circle = 0;
         int triangle = 0;
-        int BlueTriangle = 0;
-        int YellowTriangle = 0;
+        int RedRectangle = 0;
+        int YellowRectangle = 0;
         int rhombus = 0;
         int stars = 0;
         for (int i = 0; i < matList.size(); i++) {
@@ -22,17 +22,16 @@ public class ShapeStatistics {
                 if (count > 0) {
                     Log.d("laiyang66", shape + "-" + count);
                     if (shape.equals("square") || shape.equals("rectangle")) {
-                         rectangle+= count;
+                        rectangle += count;
+                        if (i == 0) {
+                            RedRectangle += count;
+                        } else if (i == 3) {
+                            YellowRectangle += count;
+                        }
                     } else if (shape.equals("circle")) {
                         circle += count;
                     } else if (shape.equals("triangle")) {
                         triangle += count;
-                        if (i == 1){
-                            BlueTriangle += count;
-                        }else if (i == 2){
-                            YellowTriangle += count;
-                        }
-
                     } else if (shape.equals("stars")) {
                         stars += count;
                     } else if (shape.equals("rhombus")) {
@@ -41,7 +40,8 @@ public class ShapeStatistics {
                 }
             }
         }
-        return "" + rectangle +"" +  "" + triangle + "" + "" + stars + "" + (BlueTriangle + YellowTriangle);
+      //  return circle +"" + triangle +""+stars+"" +(RedRectangle + YellowRectangle);
+       return rectangle +""+ circle +""+ triangle;
     }
 
     public static String getColor(List<Map<String, Integer>> mapList) {
@@ -70,7 +70,7 @@ public class ShapeStatistics {
                     } else if (i == 5) { // 青色
                         cyan += num;
                     } else if (i == 6) { //黑色
-                        black +=0;
+                        black += 0;
                     } else if (i == 7) {
 
                     }
@@ -78,7 +78,7 @@ public class ShapeStatistics {
             }
         }
 
-        return red + "" + green +"" + blue +"" + yellow + "" +pink + "" +cyan + "" + black;
+        return red + "" + green + "" + blue + "" + yellow + "" + pink + "" + cyan + "" + black;
     }
 
 

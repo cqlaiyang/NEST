@@ -36,6 +36,15 @@ public class Connect_transport {
     public static DataOutputStream bOutputStream = null;
     public static Socket socket = null;
 
+
+    // 傻逼debug
+    private int port2 = 8080;
+    public static DataInputStream bInputStream2 = null;
+    public static DataOutputStream bOutputStream2 = null;
+    public static Socket socket2 = null;
+
+
+
     // 串口通信(谷歌官方)
     private SerialPort mSerialPort = null;
     private static OutputStream SerialOutputStream;
@@ -71,11 +80,22 @@ public class Connect_transport {
             bInputStream = new DataInputStream(socket.getInputStream());
             bOutputStream = new DataOutputStream(socket.getOutputStream());
 
+
+/*
+            // 傻逼debug
+            socket2 = new Socket();
+            socket2.connect(new InetSocketAddress("192.168.5.3",port),5000);
+            bOutputStream2 = new DataOutputStream(socket2.getOutputStream());
+*/
+
             // 开启接受线程
-            wifiReceiveThread.start();
+            if (!wifiReceiveThread.isAlive()){
+                wifiReceiveThread.start();
+            }
 
             // 心跳包防止掉线
             SendBeatData();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -218,6 +238,9 @@ public class Connect_transport {
                             bOutputStream.write(sendData, 0, sendData.length);
                             bOutputStream.flush();
 
+//                            // 傻逼debug
+//                            bOutputStream2.write(sendData,0,sendData.length);
+//                            bOutputStream2.flush();
 
                             Message message = new Message();
                             message.what = 2;
@@ -277,6 +300,11 @@ public class Connect_transport {
                             Logger.i("error", "WIFI发送成功");
                             bOutputStream.write(sendData, 0, sendData.length);
                             bOutputStream.flush();
+//
+//                            // 傻逼debug
+//                            bOutputStream2.write(sendData,0,sendData.length);
+//                            bOutputStream2.flush();
+
                             //MeanActivity.sPort.write(sendData, 5000);
                             Message message = new Message();
                             message.what = 2;

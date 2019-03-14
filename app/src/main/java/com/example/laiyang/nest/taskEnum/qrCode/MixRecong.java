@@ -6,6 +6,7 @@ import com.example.laiyang.nest.activity.PlayActivity;
 import com.example.laiyang.nest.activity.queue.SendQueue;
 import com.example.laiyang.nest.camera.veer.VeerCamera;
 import com.example.laiyang.nest.taskManager.MissionQueueFactory;
+import com.example.laiyang.nest.utils.Logger;
 
 /**
  * Created by laiyang at
@@ -66,16 +67,61 @@ public class MixRecong {
                             System.out.println(i + "-" + strArrary[i]);
                         }
 
-                        int M02_1 = Integer.parseInt(strArrary[0].substring(12,14)) - 10;
-                        int M02_2 = Integer.parseInt(strArrary[1].substring(0,2)) - 10;
-                        int M02_3 = Integer.parseInt(strArrary[2].substring(0,2)) - 10;
-                        int M02_4 = Integer.parseInt(strArrary[3].substring(0,2)) - 10;
+                        int M02 = Integer.parseInt(strArrary[0].substring(4,5));
+                        int M04 = Integer.parseInt(strArrary[3].substring(9,10));
+                        int M03_1 = Integer.parseInt(strArrary[0].substring(9,11));
+                        int M03_2 = Integer.parseInt(strArrary[1].substring(0,2));
+                        int M03_3 = Integer.parseInt(strArrary[2].substring(0,2));
+                        int M03_4 = Integer.parseInt(strArrary[3].substring(0,2));
+                        byte[] bytes = new byte[]{(byte) M02, (byte) M04,(byte)0x03,0x05,0x14,0x45, (byte) 0xDE,(byte) 0x92,};
 
-                        byte[] M03 = strArrary[3].substring(8,10).getBytes();
-                        byte[] M04 = strArrary[3].substring(16,18).getBytes();
-                        byte[] M05 = strArrary[4].substring(5,6).getBytes();
+/*
+                        int M03_1 = Integer.parseInt(strArrary[0].substring(12,14));
+                        int M03_2 = Integer.parseInt(strArrary[1].substring(0,2));
+                        int M03_3 = Integer.parseInt(strArrary[2].substring(0,2));
+                        int M03_4 = Integer.parseInt(strArrary[3].substring(0,2));
 
-                        byte[] bytes = new byte[]{(byte)0x03,0x05,0x14,0x45, (byte) 0xDE,(byte) 0x92,M03[0],M03[1],M04[0],M04[1],M05[0]};
+                        String M04_1 = strArrary[3].substring(8,10);
+                        String M04_2 = strArrary[3].substring(16,18);
+                        String M05 = strArrary[4].substring(5,6);
+
+                        switch (M05){
+                            case "A":{
+                                M05 = "G2";
+                                break;
+                            }
+                            case "B":{
+                                M05 = "G4";
+                                break;
+                            }
+                            case "C":{
+                                M05 = "G6";
+                                break;
+                            }
+                            case "D":{
+                                M05 = "F7";
+                                break;
+                            }case "E":{
+                                M05 = "D7";
+                                break;
+                            }
+                            case "F":{
+                                M05 = "B7";
+                                break;
+                            }
+                            default:{
+                                M05 = "B7";
+                                Logger.d("error","" + M05);
+                            }
+                        }
+
+                        byte[] byte1 = M04_1.getBytes();
+                        byte[] byte2 = M04_2.getBytes();
+
+                        byte[] byte3 = M05.getBytes();
+                        byte[] bytes = new byte[]{byte1[0],byte1[1],byte2[0],byte2[1],byte3[0],byte3[1],(byte)0x03,0x05,0x14,0x45, (byte) 0xDE,(byte) 0x92,};
+
+*/
 
                         MissionQueueFactory.getMissionQueue().add(new SendQueue(bytes));
                     }

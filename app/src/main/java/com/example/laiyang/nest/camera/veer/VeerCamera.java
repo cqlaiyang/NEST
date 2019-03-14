@@ -125,6 +125,7 @@ public class VeerCamera {
         });
     }
 
+
     public static void MinDown() {
         ThreadPoolProxyFactory.getNormalThreadPoolProxy().excute(new Runnable() {
             @Override
@@ -134,6 +135,15 @@ public class VeerCamera {
         });
     }
 
+    public static void staticMinUp() throws InterruptedException {
+        ThreadPoolProxyFactory.getNormalThreadPoolProxy().excute(new Runnable() {
+            @Override
+            public void run() {
+                NativeCaller.PPPPPTZControl(SystemValue.deviceId,47);
+            }
+        });
+        Thread.sleep(1000);
+    }
     public static int count = 0;
     public static int count2 = 0;
     /**
